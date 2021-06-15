@@ -1,0 +1,38 @@
+#开发环境配置
+
+server:
+  # 服务端口
+  port: 5000
+
+
+spring:
+  # 数据源配置，请修改为你项目的实际配置
+  datasource:
+    username: "root"
+    password: "Wcg372101.."
+    url: jdbc:mysql://localhost:3306/veronica_blog?useSSL=false&serverTimezone=UTC&characterEncoding=UTF8
+  sql:
+    init:
+      enabled: false
+
+
+# 开启权限拦截
+auth:
+  enabled: true
+
+
+# 开启http请求日志记录
+request-log:
+  enabled: true
+
+
+logging:
+  level:
+    # web信息日志记录
+    web: debug
+    # SQL日志记录
+    io.github.talelin.latticy.mapper: debug
+
+
+
+
