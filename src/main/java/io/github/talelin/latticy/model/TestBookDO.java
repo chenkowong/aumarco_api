@@ -12,7 +12,7 @@ import java.util.Date;
 @TableName("book")
 @Data
 
-public class BookDO {
+public class TestBookDO {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String title;
