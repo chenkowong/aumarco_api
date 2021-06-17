@@ -11,4 +11,13 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
     </resultMap>
+
+    <select id="selectByTitleLikeKeyword" resultMap="BaseResultMap">
+        SELECT *
+        FROM book b
+        WHERE
+        b.title LIKE #{q}
+        AND
+        b.delete_time IS NULL
+    </select>
 </mapper>

@@ -9,4 +9,5 @@ import java.util.List;
 
 @Repository
 public interface TestBookMapper extends BaseMapper<TestBookDO> {
+    List<TestBookDO> selectByTitleLikeKeyword(@Param("q") String q);
 }
