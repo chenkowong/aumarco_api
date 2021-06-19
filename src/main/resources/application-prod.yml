@@ -2,15 +2,18 @@
 
 server:
   # 服务端口
-  port: 5000
+  port: 5004
 
 spring:
   # 数据源配置，请修改为你项目的实际配置
   datasource:
-    username: "root"
-    password: "123456"
+    username: root
+    password: Z2TzT5jzXCi5paZY
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/lin-cms?useSSL=false&serverTimezone=UTC&characterEncoding=UTF8
+    url: jdbc:mysql://39.108.75.121:3306/veronica_blog?useSSL=false&serverTimezone=UTC&characterEncoding=UTF8
+  sql:
+    init:
+      enabled: false
 
 # 开启权限拦截
 auth:

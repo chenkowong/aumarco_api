@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.talelin.latticy.mapper.SortMapper">
+    <resultMap id="BaseResultMap" type="io.github.talelin.latticy.model.SortDO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="sort_name" jdbcType="VARCHAR" property="sort_name" />
+        <result column="sort_alias" jdbcType="VARCHAR" property="sort_alias" />
+        <result column="sort_description" jdbcType="VARCHAR" property="sort_description" />
+        <result column="parent_sort_id" jdbcType="INTEGER" property="parent_sort_id" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    </resultMap>
+
+    <insert id="insertBatch">
+        INSERT INTO sort(sort_name, sort_alias, sort_description, parent_sort_id)
+        VALUES
+        <foreach collection="relations" item="relation" separator=",">
+            (#{relation.sortName}, #{relation.sortAlias}, #{relation.sortDescription}, #{relation.parentSortId})
+        </foreach>
+    </insert>
+
+    <select id="selectPageByKeyWord" resultType="io.github.talelin.latticy.model.SortDO">
+        SELECT s.id, s.sort_name, s.sort_alias, s.sort_description,
+               s.parent_sort_id,
+               date_format( s.create_time, '%Y-%m-%d %H:%i:%s' ) AS create_time,
+               date_format( s.update_time, '%Y-%m-%d %H:%i:%s' ) AS update_time
+        FROM sort s
+        WHERE s.delete_time IS NULL
+        <if test="keyWord != null and keyWord !=''">
+            AND s.sort_name LIKE concat('%',#{keyWord},'%')
+        </if>
+        ORDER BY create_time DESC
+    </select>
+</mapper>

@@ -1,17 +1,17 @@
 package io.github.talelin.latticy.controller.v1;
 
-import io.github.talelin.core.annotation.Logger;
-import io.github.talelin.core.annotation.LoginRequired;
-import io.github.talelin.latticy.model.TestBookDO;
-import io.github.talelin.latticy.service.TestBookService;
+import io.github.talelin.latticy.model.TestBookDO; // DO模型层
+import io.github.talelin.latticy.service.TestBookService; // 业务层
 import io.github.talelin.autoconfigure.exception.NotFoundException; // 异常提示
 import io.github.talelin.latticy.dto.book.CreateOrUpdateTestBookDTO; // 请求体检验
 
+import io.github.talelin.core.annotation.Logger;
+import io.github.talelin.core.annotation.LoginRequired;
 import io.github.talelin.core.annotation.GroupRequired; // 校验拥有权限的分组
 import io.github.talelin.core.annotation.PermissionMeta; // 校验请求权限
 
 import io.github.talelin.latticy.vo.CreatedVO; // 新增
-import io.github.talelin.latticy.vo.DeletedVO;
+import io.github.talelin.latticy.vo.DeletedVO; // 删除
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
@@ -27,10 +27,10 @@ public class TestBookController {
     @Autowired
     private TestBookService testBookService;
 
-    @GetMapping("/search")
-    @LoginRequired
-    @PermissionMeta(value = "搜索图书", module = "图书", mount = true)
-    @Logger(template = "{user.nickname}搜索的一本书")
+    @GetMapping("/search") // restful接口方法，GET，引号中新增接口路径
+    @LoginRequired // 登录校验
+    @PermissionMeta(value = "搜索图书", module = "图书", mount = true) // 权限校验
+    @Logger(template = "{user.nickname}搜索的一本书") // 行为日志
     public List<TestBookDO> searchTestBook(@RequestParam(value = "q", required = false) String q) {
         List<TestBookDO> testbooks = testBookService.getTestBookByKeyword("%" + q + "%");
         return testbooks;
