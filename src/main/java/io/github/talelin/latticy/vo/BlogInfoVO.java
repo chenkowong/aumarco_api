@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 public class BlogInfoVO {
 
     private Integer id;
+    private Integer sortId;
     private String sortName;
     private String blogTitle;
     private String blogCover;
@@ -24,6 +25,7 @@ public class BlogInfoVO {
 
     public BlogInfoVO(BlogDO blog, SortDO sort) {
         BeanUtils.copyProperties(blog, this);
+        this.sortId = sort.getId();
         this.sortName = sort.getSortName();
     }
 }

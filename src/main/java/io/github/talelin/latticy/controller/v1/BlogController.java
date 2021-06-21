@@ -6,14 +6,15 @@ import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.latticy.common.util.PageUtil;
 import io.github.talelin.latticy.dto.blog.CreateOrUpdateBlogDTO;
+import io.github.talelin.latticy.dto.blog_sort.RemoveBlogSortDTO;
 import io.github.talelin.latticy.model.BlogDO;
+import io.github.talelin.latticy.model.BlogSortDO;
 import io.github.talelin.latticy.model.SortDO;
 import io.github.talelin.latticy.service.BlogService;
+import io.github.talelin.latticy.service.BlogSortService;
 import io.github.talelin.latticy.service.SortService;
-import io.github.talelin.latticy.vo.BlogInfoVO;
-import io.github.talelin.latticy.vo.CreatedVO;
-import io.github.talelin.latticy.vo.PageResponseVO;
-import io.github.talelin.latticy.vo.UpdatedVO;
+import io.github.talelin.latticy.vo.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,6 +36,9 @@ public class BlogController {
 
     @Autowired
     private SortService sortService;
+
+    @Autowired
+    private BlogSortService blogSortService;
 
     @GetMapping("/search")
     public PageResponseVO<BlogInfoVO> fetchBlogs(
@@ -81,5 +84,24 @@ public class BlogController {
         }
         blogService.updateBlog(blog, validator);
         return new UpdatedVO(13);
+    }
+
+    @DeleteMapping("/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "删除博客", module = "博客", mount = true)
+    public DeletedVO deleteBlog(@PathVariable("id") @Positive(message = "{id}") Integer id, @Param("sortId") @Positive(message = "{sortId}") Integer sort_id) {
+        if (sort_id == null) {
+            throw new NotFoundException(10023);
+        }
+        BlogDO blog = blogService.selectById(id);
+        if (blog == null) {
+            throw new NotFoundException(10022);
+        }
+        blogService.deleteById(blog.getId());
+        RemoveBlogSortDTO blogSort = new RemoveBlogSortDTO();
+        blogSort.setBlogId(blog.getId());
+        blogSort.setSortId(sort_id);
+        blogSortService.removeBlogSort(blogSort);
+        return new DeletedVO(14);
     }
 }

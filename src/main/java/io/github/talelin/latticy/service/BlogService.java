@@ -17,4 +17,6 @@ public interface BlogService {
     boolean createBlog(CreateOrUpdateBlogDTO validator);
 
     boolean updateBlog(BlogDO blog, CreateOrUpdateBlogDTO validator);
+
+    boolean deleteById(Integer blogId);
 }

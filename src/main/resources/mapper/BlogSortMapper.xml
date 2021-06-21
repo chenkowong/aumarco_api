@@ -6,4 +6,10 @@
         <result column="blog_id" jdbcType="INTEGER" property="blog_id" />
         <result column="sort_id" jdbcType="INTEGER" property="sort_id" />
     </resultMap>
+
+    <delete id="deleteBatchByBlogIdAndSortId">
+        DELETE FROM blog_sort
+        WHERE blog_id = #{blogId}
+        AND sort_id = #{sortId}
+    </delete>
 </mapper>

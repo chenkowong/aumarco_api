@@ -1,5 +1,6 @@
 package io.github.talelin.latticy.service;
 
+import io.github.talelin.latticy.dto.blog_sort.RemoveBlogSortDTO;
 import io.github.talelin.latticy.model.BlogSortDO;
 
 public interface BlogSortService {
@@ -9,4 +10,6 @@ public interface BlogSortService {
      * @return
      */
     boolean dispatchBlogSort(BlogSortDO validator);
+
+    boolean removeBlogSort(RemoveBlogSortDTO dto);
 }

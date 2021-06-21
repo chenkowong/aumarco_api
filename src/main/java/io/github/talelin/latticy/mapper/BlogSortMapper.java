@@ -9,4 +9,6 @@ import java.util.List;
 
 @Repository
 public interface BlogSortMapper extends BaseMapper<BlogSortDO> {
+
+    int deleteBatchByBlogIdAndSortId(@Param("blogId") Integer blogId, @Param("sortId") Integer sortId);
 }
