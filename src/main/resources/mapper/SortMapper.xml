@@ -32,4 +32,17 @@
         </if>
         ORDER BY create_time DESC
     </select>
+
+    <select id="selectSortByBlogId" resultType="io.github.talelin.latticy.model.SortDO">
+        SELECT s.id, s.sort_name, s.sort_alias, s.sort_description,
+               s.parent_sort_id, s.create_time, s.update_time,
+               s.delete_time
+        FROM sort s
+        WHERE s.delete_time IS NULL
+          AND s.id IN (
+            SELECT bs.sort_id
+            FROM blog_sort bs
+            WHERE bs.blog_id = #{blogId}
+        )
+    </select>
 </mapper>

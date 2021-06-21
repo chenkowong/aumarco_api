@@ -48,7 +48,22 @@ public class SortServiceImpl implements SortService {
     }
 
     @Override
+    public boolean updateSort(SortDO sort, CreateOrUpdateSortDTO validator) {
+        sort.setSortName(validator.getSortName());
+        sort.setSortAlias(validator.getSortAlias());
+        sort.setSortDescription(validator.getSortDescription());
+        sort.setParentSortId(validator.getParentSortId());
+        return sortMapper.updateById(sort) > 0;
+    }
+
+    @Override
     public boolean deleteById(Integer id) {
         return sortMapper.deleteById(id) > 0;
+    }
+
+    @Override
+    public SortDO selectSortByBlogId(Integer blogId) {
+        SortDO sort = sortMapper.selectSortByBlogId(blogId);
+        return sort;
     }
 }

@@ -14,16 +14,16 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class CreateOrUpdateSortDTO {
 
-    @NotEmpty(message = "{book.title.not-empty}")
-    @Length(max = 50, message = "{book.title.length}")
+    @NotEmpty(message = "{sort.sort_name.not-empty}")
+    @Length(max = 50, message = "{sort.sort_name.length}")
     private String sortName;
 
-    @NotEmpty(message = "{book.author.not-empty}")
-    @Length(max = 15, message = "{book.author.length}")
+    @NotEmpty(message = "{sort.sort_alias.not-empty}")
+    @Length(max = 15, message = "{sort.sort_alias.length}")
     private String sortAlias;
 
-    @NotEmpty(message = "{book.summary.not-empty}")
-    @Length(max = 255, message = "{book.summary.length}")
+    @NotEmpty(message = "{sort.sort_description.not_empty}")
+    @Length(max = 255, message = "{sort.sort_description.length}")
     private String sortDescription;
 
     private Integer parentSortId;

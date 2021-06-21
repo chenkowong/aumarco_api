@@ -13,6 +13,7 @@ import io.github.talelin.latticy.service.SortService;
 import io.github.talelin.latticy.vo.CreatedVO;
 import io.github.talelin.latticy.vo.DeletedVO;
 import io.github.talelin.latticy.vo.PageResponseVO;
+import io.github.talelin.latticy.vo.UpdatedVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +68,16 @@ public class SortController {
     public CreatedVO createSort(@RequestBody @Validated CreateOrUpdateSortDTO validator) {
         sortService.createSort(validator);
         return new CreatedVO(12);
+    }
+
+    @PutMapping("/{id}")
+    public UpdatedVO updateSort(@PathVariable("id") @Positive(message = "{id.positive}") Integer id, @RequestBody @Validated CreateOrUpdateSortDTO validator) {
+        SortDO sort = sortService.getSortById(id);
+        if (sort == null) {
+            throw new NotFoundException(10022);
+        }
+        sortService.updateSort(sort, validator);
+        return new UpdatedVO(13);
     }
 
     @DeleteMapping("/{id}")

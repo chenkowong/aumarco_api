@@ -14,4 +14,6 @@ public interface SortMapper extends BaseMapper<SortDO> {
     int insertBatch(@Param("relations") List<SortDO> relations);
 
     IPage<SortDO> selectPageByKeyWord(Page<SortDO> paper, String keyWord);
+
+    SortDO selectSortByBlogId(Integer blogId);
 }

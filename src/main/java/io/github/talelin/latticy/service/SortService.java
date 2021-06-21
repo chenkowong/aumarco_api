@@ -12,9 +12,13 @@ public interface SortService {
 
     List<SortDO> findAll(); // 查询所有类别
 
-    IPage<SortDO> selectPageByKeyWord(Integer page, Integer count, String keyWord);
+    IPage<SortDO> selectPageByKeyWord(Integer page, Integer count, String keyWord); // 分页查询类别
 
     boolean createSort(CreateOrUpdateSortDTO validator); // 新增类别
 
+    boolean updateSort(SortDO sort, CreateOrUpdateSortDTO validator); // 修改类别
+
     boolean deleteById(Integer id); // 删除
+
+    SortDO selectSortByBlogId(Integer blogId);
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.talelin.latticy.mapper.BlogMapper">
+    <resultMap id="BaseResultMap" type="io.github.talelin.latticy.model.BlogDO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_id" jdbcType="INTEGER" property="user_id" />
+        <result column="blog_title" jdbcType="VARCHAR" property="blog_title" />
+        <result column="blog_cover" jdbcType="VARCHAR" property="blog_cover" />
+        <result column="blog_markdown" jdbcType="VARCHAR" property="blog_markdown" />
+        <result column="blog_content" jdbcType="VARCHAR" property="blog_content" />
+        <result column="blog_views" jdbcType="INTEGER" property="blog_views" />
+        <result column="blog_like_count" jdbcType="INTEGER" property="blog_like_count" />
+        <result column="blog_comment_count" jdbcType="INTEGER" property="blog_comment_count" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    </resultMap>
+
+    <select id="trash" resultType="io.github.talelin.latticy.model.BlogDO">
+        SELECT b.id, b.user_id, b.blog_title, b.blog_cover,
+               b.blog_views,
+               b.blog_like_count, b.blog_comment_count,
+               (
+                    SELECT s.sort_name
+                    FROM sort s
+                    WHERE s.id IN (
+                        SELECT bs.sort_id
+                        FROM blog_sort bs
+                        WHERE bs.blog_id = b.id
+                    )
+                    AND s.delete_time IS NULL
+               ) as sort_name,
+               date_format( b.create_time, '%Y-%m-%d %H:%i:%s' ) AS create_time,
+               date_format( b.update_time, '%Y-%m-%d %H:%i:%s' ) AS update_time
+        FROM blog b
+        WHERE b.delete_time IS NULL
+        <if test="keyWord != null and keyWord !=''">
+            AND b.blog_title LIKE concat('%',#{keyWord},'%')
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectPageByKeyWord" resultType="io.github.talelin.latticy.model.BlogDO">
+        SELECT b.id, b.user_id, b.blog_title, b.blog_cover,
+               b.blog_views,
+               b.blog_like_count, b.blog_comment_count,
+               date_format( b.create_time, '%Y-%m-%d %H:%i:%s' ) AS create_time,
+               date_format( b.update_time, '%Y-%m-%d %H:%i:%s' ) AS update_time
+        FROM blog b
+        WHERE b.delete_time IS NULL
+        <if test="keyWord != null and keyWord !=''">
+            AND b.blog_title LIKE concat('%',#{keyWord},'%')
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectBlogById" resultType="io.github.talelin.latticy.model.BlogDO">
+        SELECT b.id, b.user_id, b.blog_title, b.blog_cover,
+               b.blog_markdown, b.blog_content, b.blog_views,
+               b.blog_like_count, b.blog_comment_count,
+               date_format( b.create_time, '%Y-%m-%d %H:%i:%s' ) AS create_time,
+               date_format( b.update_time, '%Y-%m-%d %H:%i:%s' ) AS update_time
+        FROM blog b
+        WHERE b.id = #{id}
+        AND b.delete_time IS NULL
+    </select>
+</mapper>
