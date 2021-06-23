@@ -58,12 +58,14 @@ public class BlogController {
     }
 
     @GetMapping("/{id}")
-    public BlogDO selectBlogById(@PathVariable(value = "id") @Positive(message = "id必须为正整数") Integer id) {
+    public BlogContentVO selectBlogById(@PathVariable(value = "id") @Positive(message = "id必须为正整数") Integer id) {
         BlogDO blog = blogService.selectBlogById(id);
         if (blog == null) {
             throw new NotFoundException(10022);
         }
-        return blog;
+        SortDO sort = sortService.selectSortByBlogId(blog.getId());
+        BlogContentVO blogContent = new BlogContentVO(blog, sort);
+        return blogContent;
     }
 
     @PostMapping("")

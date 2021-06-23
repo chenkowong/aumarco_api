@@ -31,11 +31,11 @@ public class CreateOrUpdateBlogDTO {
     private String blogCover;
 
     @NotEmpty(message = "{sort.sort_description.not_empty}")
-    @Length(max = 500, message = "{sort.sort_description.length}")
+    @Length(max = 50000, message = "{sort.sort_description.length}")
     private String blogMarkdown;
 
     @NotEmpty(message = "{sort.sort_description.not_empty}")
-    @Length(max = 500, message = "{sort.sort_description.length}")
+    @Length(max = 50000, message = "{sort.sort_description.length}")
     private String blogContent;
 
     private Integer blogViews;

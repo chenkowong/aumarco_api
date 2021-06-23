@@ -3,7 +3,13 @@
 lin:
   file:
     # 文件服务域名
-    domain: http://localhost:5000/
+    domain: https://qn.aumarco.com/
+    # domain: http://localhost:5004/
+    # 七牛云域名
+    qiniuyun:
+      access-key: 9OHeXJjapC7HtQGH7mAZE0G11LXUZpoUKRkjFSAH
+      secret-key: sdIRJYYpyrXpBDT2Lw9Zig4BJT-OiyLBa1hDSOpT
+      bucket: aumarco
     # 排除文件类型
     exclude:
     # 包括文件类型

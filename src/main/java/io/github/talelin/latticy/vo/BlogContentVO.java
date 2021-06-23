@@ -15,24 +15,26 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogInfoVO {
+public class BlogContentVO {
 
     private Integer id;
     private Integer sortId;
     private String sortName;
     private String blogTitle;
     private String blogCover;
+    private String blogMarkdown;
+    private String blogContent;
     private Integer blogViews;
     private Integer blogLikeCount;
     private Integer blogCommentCount;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
-    public BlogInfoVO(BlogDO blog, SortDO sort) {
+    public BlogContentVO(BlogDO blog, SortDO sort) {
         BeanUtils.copyProperties(blog, this);
         this.sortId = sort.getId();
         this.sortName = sort.getSortName();
