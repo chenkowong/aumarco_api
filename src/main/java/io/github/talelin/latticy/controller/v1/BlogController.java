@@ -64,7 +64,9 @@ public class BlogController {
             throw new NotFoundException(10022);
         }
         SortDO sort = sortService.selectSortByBlogId(blog.getId());
-        BlogContentVO blogContent = new BlogContentVO(blog, sort);
+        BlogDO prevBlog = blogService.selectBlogById(id - 1);
+        BlogDO nextBlog = blogService.selectBlogById(id + 1);
+        BlogContentVO blogContent = new BlogContentVO(blog, prevBlog, nextBlog, sort);
         return blogContent;
     }
 
