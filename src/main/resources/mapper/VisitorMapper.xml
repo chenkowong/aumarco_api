@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.talelin.latticy.mapper.VisitorMapper">
+    <resultMap id="BaseResultMap" type="io.github.talelin.latticy.model.VisitorDO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="cip" jdbcType="VARCHAR" property="cip" />
+        <result column="cid" jdbcType="VARCHAR" property="cid" />
+        <result column="cname" jdbcType="VARCHAR" property="cname" />
+        <result column="count" jdbcType="INTEGER" property="count" />
+    </resultMap>
+
+    <select id="selectVisitorByCip" resultType="io.github.talelin.latticy.model.VisitorDO">
+        SELECT v.id, v.cip, v.cid, v.cname, v.count
+        FROM visitor v
+        WHERE v.cip = #{cip}
+    </select>
+</mapper>

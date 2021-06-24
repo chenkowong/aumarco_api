@@ -58,3 +58,33 @@ CREATE TABLE blog_sort
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
+-- ----------------------------
+-- 访问者表
+-- ----------------------------
+DROP TABLE IF EXISTS visitor;
+CREATE TABLE visitor
+(
+    id      int(18) unsigned NOT NULL AUTO_INCREMENT,
+    cip     varchar(50)          NOT NULL COMMENT 'IP地址',
+    cid     varchar(50)          NOT NULL COMMENT '城市编号',
+    cname   varchar(100)         NOT NULL COMMENT '城市名称',
+    count   int(50)                       COMMENT '访问次数',
+    PRIMARY KEY (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;
+-- ----------------------------
+-- 博客-访问者表
+-- ----------------------------
+DROP TABLE IF EXISTS blog_visitor;
+CREATE TABLE blog_visitor
+(
+    id         int(10) unsigned NOT NULL AUTO_INCREMENT,
+    blog_id    int(10) unsigned NOT NULL COMMENT '博客id',
+    visitor_id int(10) unsigned NOT NULL COMMENT '访问者id',
+    count      int(50)                   COMMENT '访问次数',
+    PRIMARY KEY (id),
+    KEY blog_id_visitor_id (blog_id, visitor_id) USING BTREE COMMENT '联合索引'
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;
