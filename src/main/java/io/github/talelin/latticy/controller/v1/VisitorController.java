@@ -1,8 +1,17 @@
 package io.github.talelin.latticy.controller.v1;
 
+import io.github.talelin.autoconfigure.exception.NotFoundException;
+import io.github.talelin.latticy.dto.blog.CreateOrUpdateBlogDTO;
+import io.github.talelin.latticy.dto.blog_visitor.DispatchBlogVisitorDTO;
+import io.github.talelin.latticy.dto.blog_visitor.UpdateBlogVisitorDTO;
 import io.github.talelin.latticy.dto.visitor.CreateOrUpdateVisitorDTO;
+import io.github.talelin.latticy.model.BlogDO;
+import io.github.talelin.latticy.model.BlogVisitorDO;
 import io.github.talelin.latticy.model.VisitorDO;
+import io.github.talelin.latticy.service.BlogService;
+import io.github.talelin.latticy.service.BlogVisitorService;
 import io.github.talelin.latticy.service.VisitorService;
+import io.github.talelin.latticy.vo.UpdatedVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +27,14 @@ public class VisitorController {
     @Autowired
     private VisitorService visitorService;
 
+    @Autowired
+    private BlogService blogService;
+
+    @Autowired
+    private BlogVisitorService blogVisitorService;
+
     @GetMapping("")
-    public VisitorDO selectVisitorByCip(
+    public UpdatedVO refreshWebsiteViews(
             @RequestParam(name = "cip") String cip,
             @RequestParam(name = "cid") String cid,
             @RequestParam(name = "cname") String cname
@@ -44,12 +59,46 @@ public class VisitorController {
         CreateOrUpdateVisitorDTO upd_zion = new CreateOrUpdateVisitorDTO();
         upd_zion.setCount(zion.getCount() + 1);
         visitorService.updateVisitor(zion, upd_zion);
-        return visitor;
+        return new UpdatedVO(42);
     }
 
     @GetMapping("/{id}")
     public VisitorDO getVisitorById(@PathVariable(value = "id") @Positive(message = "id必须为正整数") Integer id) {
         VisitorDO visitor = visitorService.selectById(id);
         return visitor;
+    }
+
+    @GetMapping("/view")
+    public UpdatedVO refreshBlogViews(
+            @RequestParam(name = "blog_id") Integer blog_id,
+            @RequestParam(name = "cip") String cip
+    ) {
+        BlogDO blog = blogService.selectById(blog_id);
+        if (blog == null) {
+            throw new NotFoundException(10022);
+        }
+        VisitorDO visitor = visitorService.selectVisitorByCip(cip);
+        if (visitor == null) {
+            throw new NotFoundException("查找不到访问者");
+        }
+        DispatchBlogVisitorDTO blogVisitorDTO = new DispatchBlogVisitorDTO();
+        blogVisitorDTO.setBlogId(blog.getId());
+        blogVisitorDTO.setVisitorId(visitor.getId());
+        BlogVisitorDO blogVisitor = blogVisitorService.selectBlogVisitor(blogVisitorDTO);
+        if (blogVisitor == null) {
+            BlogVisitorDO new_blogVisitor = new BlogVisitorDO();
+            new_blogVisitor.setBlogId(blog.getId());
+            new_blogVisitor.setVisitorId(visitor.getId());
+            new_blogVisitor.setCount(1);
+            blogVisitorService.dispatchBlogVisitor(new_blogVisitor);
+        } else {
+            UpdateBlogVisitorDTO upd_blogVisitor = new UpdateBlogVisitorDTO();
+            upd_blogVisitor.setCount(blogVisitor.getCount() + 1);
+            blogVisitorService.updateBlogVisitor(blogVisitor, upd_blogVisitor);
+        }
+        CreateOrUpdateBlogDTO upd_blog = new CreateOrUpdateBlogDTO();
+        upd_blog.setBlogViews(blog.getBlogViews() + 1);
+        blogService.updateBlogViews(blog, upd_blog);
+        return new UpdatedVO(42);
     }
 }

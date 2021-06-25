@@ -31,10 +31,10 @@ public class BlogContentVO {
     private Integer prevBlogId; // 获取前一篇博客的id
     private Integer nextBlogId; // 获取后一篇博客的id
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date updateTime;
 
     public BlogContentVO(BlogDO blog, BlogDO prevBlog, BlogDO nextBlog, SortDO sort) {

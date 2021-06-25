@@ -75,7 +75,7 @@ public class BlogController {
     @PermissionMeta(value = "新增博客", module = "博客", mount = true)
     public CreatedVO createBlog(@RequestBody @Validated CreateOrUpdateBlogDTO validator) {
         blogService.createBlog(validator);
-        return new CreatedVO(12);
+        return new CreatedVO(31);
     }
 
     @PutMapping("/{id}")
@@ -87,7 +87,7 @@ public class BlogController {
             throw new NotFoundException(10022);
         }
         blogService.updateBlog(blog, validator);
-        return new UpdatedVO(13);
+        return new UpdatedVO(32);
     }
 
     @DeleteMapping("/{id}")
@@ -106,6 +106,6 @@ public class BlogController {
         blogSort.setBlogId(blog.getId());
         blogSort.setSortId(sort_id);
         blogSortService.removeBlogSort(blogSort);
-        return new DeletedVO(14);
+        return new DeletedVO(33);
     }
 }

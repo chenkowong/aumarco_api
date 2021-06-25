@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.talelin.latticy.mapper.BlogVisitorMapper">
+    <resultMap id="BaseResultMap" type="io.github.talelin.latticy.model.BlogVisitorDO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="blog_id" jdbcType="INTEGER" property="blog_id" />
+        <result column="visitor_id" jdbcType="INTEGER" property="visitor_id" />
+        <result column="count" jdbcType="INTEGER" property="count" />
+    </resultMap>
+
+    <select id="selectBlogVisitorByBlogIdAndVisitorId" resultType="io.github.talelin.latticy.model.BlogVisitorDO">
+        SELECT bv.id, bv.blog_id, bv.visitor_id, bv.count
+        FROM blog_visitor bv
+        WHERE blog_id = #{blogId}
+        AND visitor_id = #{visitorId}
+    </select>
+</mapper>

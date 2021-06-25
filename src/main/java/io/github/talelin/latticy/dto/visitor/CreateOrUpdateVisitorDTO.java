@@ -11,16 +11,16 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 public class CreateOrUpdateVisitorDTO {
 
-    @NotEmpty(message = "{sort.sort_name.not-empty}")
-    @Length(max = 50, message = "{sort.sort_name.length}")
+    @NotEmpty(message = "{visitor.cip.not-empty}")
+    @Length(max = 50, message = "{visitor.cip.length}")
     private String cip;
 
-    @NotEmpty(message = "{sort.sort_name.not-empty}")
-    @Length(max = 50, message = "{sort.sort_name.length}")
+    @NotEmpty(message = "{visitor.cid.not-empty}")
+    @Length(max = 50, message = "{visitor.cid.length}")
     private String cid;
 
-    @NotEmpty(message = "{sort.sort_name.not-empty}")
-    @Length(max = 100, message = "{sort.sort_name.length}")
+    @NotEmpty(message = "{visitor.cname.not-empty}")
+    @Length(max = 100, message = "{visitor.cname.length}")
     private String cname;
 
     @Positive(message = "{group.id.positive}")

@@ -77,6 +77,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, BlogDO> implements 
     }
 
     @Override
+    public boolean updateBlogViews(BlogDO blog, CreateOrUpdateBlogDTO validator) {
+        blog.setBlogViews(validator.getBlogViews());
+        return blogMapper.updateById(blog) > 0;
+    }
+
+    @Override
     public boolean deleteById(Integer id) {
         return blogMapper.deleteById(id) > 0;
     }

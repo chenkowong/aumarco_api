@@ -16,26 +16,26 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 public class CreateOrUpdateBlogDTO {
 
-    @Positive(message = "{group.id.positive}")
+    @Positive(message = "{blog.user_id.positive}")
     private Integer userId;
 
-    @Positive(message = "{group.id.positive}")
+    @Positive(message = "{blog.user_id.positive}")
     private Integer sortId;
 
-    @NotEmpty(message = "{sort.sort_name.not-empty}")
-    @Length(max = 100, message = "{sort.sort_name.length}")
+    @NotEmpty(message = "{blog.blog_title.not-empty}")
+    @Length(max = 100, message = "{blog.blog_title.length}")
     private String blogTitle;
 
-    @NotEmpty(message = "{sort.sort_alias.not-empty}")
-    @Length(max = 500, message = "{sort.sort_alias.length}")
+    @NotEmpty(message = "{blog.blog_cover.not-empty}")
+    @Length(max = 500, message = "{blog.blog_cover.length}")
     private String blogCover;
 
-    @NotEmpty(message = "{sort.sort_description.not_empty}")
-    @Length(max = 50000, message = "{sort.sort_description.length}")
+    @NotEmpty(message = "{blog.blog_markdown.not_empty}")
+    @Length(max = 50000, message = "{blog.blog_markdown.length}")
     private String blogMarkdown;
 
-    @NotEmpty(message = "{sort.sort_description.not_empty}")
-    @Length(max = 50000, message = "{sort.sort_description.length}")
+    @NotEmpty(message = "{blog.blog_content.not_empty}")
+    @Length(max = 50000, message = "{blog.blog_content.length}")
     private String blogContent;
 
     private Integer blogViews;

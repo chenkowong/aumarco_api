@@ -8,8 +8,8 @@ import javax.validation.constraints.Positive;
 @Data
 public class RemoveBlogSortDTO {
 
-    @Positive(message = "{group.id.positive}")
-    @NotNull(message = "{group.id.not-null}")
+    @Positive(message = "{blog.id.positive}")
+    @NotNull(message = "{blog.id.not-null}")
     private Integer blogId;
 
     private Integer sortId;

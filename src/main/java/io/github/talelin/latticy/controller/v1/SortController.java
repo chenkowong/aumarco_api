@@ -67,7 +67,7 @@ public class SortController {
     @PostMapping("")
     public CreatedVO createSort(@RequestBody @Validated CreateOrUpdateSortDTO validator) {
         sortService.createSort(validator);
-        return new CreatedVO(12);
+        return new CreatedVO(21);
     }
 
     @PutMapping("/{id}")
@@ -77,7 +77,7 @@ public class SortController {
             throw new NotFoundException(10022);
         }
         sortService.updateSort(sort, validator);
-        return new UpdatedVO(13);
+        return new UpdatedVO(22);
     }
 
     @DeleteMapping("/{id}")
@@ -89,6 +89,6 @@ public class SortController {
             throw new NotFoundException(10022);
         }
         sortService.deleteById(sort.getId());
-        return new DeletedVO(14);
+        return new DeletedVO(23);
     }
 }

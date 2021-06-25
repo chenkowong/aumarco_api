@@ -13,11 +13,11 @@ import javax.validation.constraints.Positive;
 @Data
 @NoArgsConstructor
 public class DispatchBlogSortDTO {
-    @Positive(message = "{group.id.positive}")
-    @NotNull(message = "{group.id.not-null}")
+    @Positive(message = "{blog.id.positive}")
+    @NotNull(message = "{blog.id.not-null}")
     private Integer blogId;
 
-    @Positive(message = "{group.id.positive}")
-    @NotNull(message = "{group.id.not-null}")
+    @Positive(message = "{blog.sort_id.positive}")
+    @NotNull(message = "{blog.sort_id.not-null}")
     private Integer sortId;
 }
