@@ -46,7 +46,7 @@ public class SortController {
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "page.number.min") Integer page,
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{page.count.min}")
+            @Min(value = 1, message = "page.count.min")
             @Max(value = 30, message = "page.count.max") Integer count,
             @RequestParam(name = "keyWord", required = false) String keyWord
 

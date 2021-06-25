@@ -1,6 +1,8 @@
 package io.github.talelin.latticy.controller.v1;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
+import io.github.talelin.latticy.common.util.PageUtil;
 import io.github.talelin.latticy.dto.blog.CreateOrUpdateBlogDTO;
 import io.github.talelin.latticy.dto.blog_visitor.DispatchBlogVisitorDTO;
 import io.github.talelin.latticy.dto.blog_visitor.UpdateBlogVisitorDTO;
@@ -11,13 +13,17 @@ import io.github.talelin.latticy.model.VisitorDO;
 import io.github.talelin.latticy.service.BlogService;
 import io.github.talelin.latticy.service.BlogVisitorService;
 import io.github.talelin.latticy.service.VisitorService;
+import io.github.talelin.latticy.vo.PageResponseVO;
 import io.github.talelin.latticy.vo.UpdatedVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/visitor")
@@ -32,6 +38,19 @@ public class VisitorController {
 
     @Autowired
     private BlogVisitorService blogVisitorService;
+
+    @GetMapping("/search")
+    public PageResponseVO<VisitorDO> fetchVisitors(
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "page.number.min") Integer page,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "page.count.min")
+            @Max(value = 30, message = "page.count.max") Integer count,
+            @RequestParam(name = "keyWord", required = false) String keyWord
+    ) {
+        IPage<VisitorDO> iPage = visitorService.selectPageByKeyWord(page, count, keyWord);
+        return PageUtil.build(iPage);
+    }
 
     @GetMapping("")
     public UpdatedVO refreshWebsiteViews(

@@ -1,6 +1,8 @@
 package io.github.talelin.latticy.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.github.talelin.latticy.common.mybatis.Page;
 import io.github.talelin.latticy.dto.visitor.CreateOrUpdateVisitorDTO;
 import io.github.talelin.latticy.mapper.VisitorMapper;
 import io.github.talelin.latticy.model.VisitorDO;
@@ -13,6 +15,13 @@ public class VisitorServiceImpl extends ServiceImpl<VisitorMapper, VisitorDO> im
 
     @Autowired
     private VisitorMapper visitorMapper;
+
+    @Override
+    public IPage<VisitorDO> selectPageByKeyWord(Integer page, Integer count, String keyWord) {
+        Page<VisitorDO> paper = new Page<>(page, count);
+        IPage<VisitorDO> iPage = visitorMapper.selectPageByKeyWord(paper, keyWord);
+        return iPage;
+    }
 
     @Override
     public VisitorDO selectVisitorByCip(String cip) {

@@ -14,4 +14,10 @@
         WHERE blog_id = #{blogId}
         AND visitor_id = #{visitorId}
     </select>
+
+    <select id="selectPageByBlogId" resultType="io.github.talelin.latticy.model.BlogVisitorDO">
+        SELECT bv.id, bv.blog_id, bv.visitor_id, bv.count
+        FROM blog_visitor bv
+        WHERE blog_id = #{blogId}
+    </select>
 </mapper>

@@ -1,5 +1,7 @@
 package io.github.talelin.latticy.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.talelin.latticy.common.mybatis.Page;
 import io.github.talelin.latticy.dto.blog_visitor.DispatchBlogVisitorDTO;
 import io.github.talelin.latticy.dto.blog_visitor.UpdateBlogVisitorDTO;
 import io.github.talelin.latticy.mapper.BlogVisitorMapper;
@@ -13,6 +15,13 @@ public class BlogVisitorServiceImpl implements BlogVisitorService {
 
     @Autowired
     private BlogVisitorMapper blogVisitorMapper;
+
+    @Override
+    public IPage<BlogVisitorDO> selectPageByBlogId(Integer page, Integer count, Integer blogId) {
+        Page<BlogVisitorDO> pager = new Page<>(page, count);
+        IPage<BlogVisitorDO> iPage = blogVisitorMapper.selectPageByBlogId(pager, blogId);
+        return iPage;
+    }
 
     @Override
     public boolean dispatchBlogVisitor(BlogVisitorDO blogVisitorDO) {

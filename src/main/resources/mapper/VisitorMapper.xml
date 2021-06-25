@@ -14,4 +14,10 @@
         FROM visitor v
         WHERE v.cip = #{cip}
     </select>
+
+    <select id="selectPageByKeyWord" resultType="io.github.talelin.latticy.model.VisitorDO">
+        SELECT v.id, v.cip, v.cid, v.cname, v.count
+        FROM visitor v
+        WHERE v.cname LIKE concat('%',#{keyWord},'%')
+    </select>
 </mapper>
