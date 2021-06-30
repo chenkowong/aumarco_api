@@ -32,8 +32,6 @@ public class SortController {
     private SortService sortService;
 
     @GetMapping("")
-    @LoginRequired // 登录校验
-    @PermissionMeta(value = "搜索类别", module = "类别", mount = true) // 权限校验
     public List<SortDO> getSorts() {
         List<SortDO> sorts = sortService.findAll();
         return sorts;

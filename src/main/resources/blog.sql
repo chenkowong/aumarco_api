@@ -88,3 +88,27 @@ CREATE TABLE blog_visitor
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
+-- ----------------------------
+-- 微信用户表
+-- ----------------------------
+DROP TABLE IF EXISTS wxuser;
+CREATE TABLE wxuser
+(
+    id               int(18) unsigned NOT NULL AUTO_INCREMENT,
+    open_id          varchar(100)     NOT NULL COMMENT 'open_id',
+    skey             varchar(100)     NOT NULL COMMENT 'UUID唯一值',
+
+    session_key      varchar(100)     NOT NULL COMMENT 'session_key',
+    city             varchar(255)     NULL DEFAULT NULL COMMENT '市',
+    province         varchar(255)     NULL DEFAULT NULL COMMENT '省',
+    country          varchar(255)     NULL DEFAULT NULL COMMENT '国',
+    avatar_url       varchar(255)     NULL DEFAULT NULL COMMENT '头像',
+    gender           tinyint(11)      NULL DEFAULT NULL COMMENT '性别',
+    nick_name        varchar(255)     NULL DEFAULT NULL COMMENT '网名',
+    create_time      datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
+    update_time      datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
+    delete_time      datetime(3)      DEFAULT NULL,
+    PRIMARY KEY (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;

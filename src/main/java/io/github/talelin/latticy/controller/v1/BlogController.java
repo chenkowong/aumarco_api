@@ -129,4 +129,24 @@ public class BlogController {
         }).collect(Collectors.toList());
         return PageUtil.build(iPage, visitors);
     }
+
+    @GetMapping("/sort")
+    public PageResponseVO<BlogInfoVO> fetchBlogsBySort(
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "page.number.min") Integer page,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "page.count.min")
+            @Max(value = 30, message = "page.count.max") Integer count,
+            @RequestParam(name = "sort_id", required = false) Integer sortId
+    ) {
+       IPage<BlogSortDO> iPage = blogSortService.selectPageBySortId(page, count, sortId);
+       List<BlogInfoVO> blogs = iPage.getRecords().stream().map(blogSort -> {
+           BlogDO blog = blogService.selectById(blogSort.getBlogId());
+           SortDO sort = sortService.getSortById(blogSort.getSortId());
+           return new BlogInfoVO(blog, sort);
+       }).collect(Collectors.toList());
+       // 使用List.sort()做时间排序，日期从大到小
+       blogs.sort((t1, t2) -> t2.getCreateTime().compareTo(t1.getCreateTime()));
+       return PageUtil.build(iPage, blogs);
+    }
 }

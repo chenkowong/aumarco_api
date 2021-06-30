@@ -7,6 +7,12 @@
         <result column="sort_id" jdbcType="INTEGER" property="sort_id" />
     </resultMap>
 
+    <select id="selectPageBySortId" resultType="io.github.talelin.latticy.model.BlogSortDO">
+        SELECT bs.id, bs.blog_id, bs.sort_id
+        FROM blog_sort bs
+        WHERE bs.sort_id = #{sortId}
+    </select>
+
     <delete id="deleteBatchByBlogIdAndSortId">
         DELETE FROM blog_sort
         WHERE blog_id = #{blogId}
