@@ -63,7 +63,7 @@ public class AuthorizeVerifyResolverImpl implements AuthorizeVerifyResolver {
         try {
             claims = jwt.decodeAccessToken(tokenStr);
         } catch (TokenExpiredException e) {
-            throw new io.github.talelin.autoconfigure.exception.TokenExpiredException(10051);
+             throw new io.github.talelin.autoconfigure.exception.TokenExpiredException(10051);
         } catch (AlgorithmMismatchException | SignatureVerificationException | JWTDecodeException | InvalidClaimException e) {
             throw new TokenInvalidException(10041);
         }

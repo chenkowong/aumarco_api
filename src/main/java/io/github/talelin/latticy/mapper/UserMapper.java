@@ -40,4 +40,9 @@ public interface UserMapper extends BaseMapper<UserDO> {
      * @return 分页数据
      */
     IPage<UserDO> selectPageByGroupId(Page pager, Integer groupId, Integer rootGroupId);
+
+    /**
+     * 通过宝贝id获取用户数据
+     */
+    UserDO selectUserByToyId(Integer toyId);
 }

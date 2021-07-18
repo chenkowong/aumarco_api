@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.talelin.latticy.mapper.UserWxUserMapper">
+    <resultMap id="BaseResultMap" type="io.github.talelin.latticy.model.UserWxUserDO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_id" jdbcType="INTEGER" property="user_id" />
+        <result column="wxuser_id" jdbcType="INTEGER" property="wxuser_id" />
+    </resultMap>
+
+    <select id="selectUserIdByWxUserId" resultType="io.github.talelin.latticy.model.UserWxUserDO">
+        SELECT uw.id, uw.user_id, uw.wxuser_id
+        FROM user_wxuser uw
+        WHERE uw.wxuser_id = #{wxuserId}
+    </select>
+</mapper>

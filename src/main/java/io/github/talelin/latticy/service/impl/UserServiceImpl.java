@@ -54,6 +54,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Autowired
     private UserGroupMapper userGroupMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Transactional
     @Override
     public UserDO createUser(RegisterDTO dto) {
@@ -229,5 +232,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         if (anyMatch) {
             throw new ForbiddenException(10073);
         }
+    }
+
+    @Override
+    public UserDO selectUserByToyId(Integer toyId) {
+        UserDO user = userMapper.selectUserByToyId(toyId);
+        return user;
     }
 }

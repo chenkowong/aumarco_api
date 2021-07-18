@@ -37,4 +37,16 @@
         AND u.delete_time IS NULL
     </select>
 
+    <select id="selectUserByToyId" resultType="io.github.talelin.latticy.model.UserDO">
+        SELECT u.id, u.username, u.nickname,
+               u.avatar, u.email, u.create_time,
+               u.update_time, u.delete_time
+        FROM lin_user AS u
+        WHERE u.id IN (
+            SELECT tu.user_id
+            FROM itoy_toy_user tu
+            WHERE tu.toy_id = #{toyId}
+        )
+    </select>
+
 </mapper>

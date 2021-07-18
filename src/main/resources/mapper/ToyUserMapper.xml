@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.talelin.latticy.mapper.ToyUserMapper">
+    <resultMap id="BaseResultMap" type="io.github.talelin.latticy.model.ToyUserDO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="toy_id" jdbcType="INTEGER" property="toy_id" />
+        <result column="user_id" jdbcType="INTEGER" property="user_id" />
+    </resultMap>
+
+    <select id="selectPageByUserId" resultType="io.github.talelin.latticy.model.ToyUserDO">
+        SELECT tu.id, tu.toy_id, tu.user_id, tu.status, tu.remark
+        FROM itoy_toy_user tu
+        WHERE tu.user_id = #{userId}
+        <if test="status != null and status !=''">
+            AND tu.status = #{status}
+        </if>
+    </select>
+
+    <select id="selectByToyId" resultType="io.github.talelin.latticy.model.ToyUserDO">
+        SELECT tu.id, tu.toy_id, tu.user_id, tu.status, tu.remark
+        FROM itoy_toy_user tu
+        WHERE tu.toy_id = #{toyId}
+    </select>
+
+    <delete id="deleteBatchByToyIdAndUserId">
+        DELETE FROM itoy_toy_user
+        WHERE toy_id = #{toyId}
+          AND user_id = #{userId}
+    </delete>
+</mapper>

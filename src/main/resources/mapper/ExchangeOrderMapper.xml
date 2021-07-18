@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.talelin.latticy.mapper.ExchangeOrderMapper">
+    <resultMap id="BaseResultMap" type="io.github.talelin.latticy.model.ExchangeOrderDO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="order_no" jdbcType="VARCHAR" property="order_no" />
+        <result column="request_toy_id" jdbcType="INTEGER" property="request_toy_id" />
+        <result column="request_user_id" jdbcType="INTEGER" property="request_user_id" />
+        <result column="exchange_user_id" jdbcType="INTEGER" property="exchange_user_id" />
+        <result column="exchange_toy_id" jdbcType="INTEGER" property="exchange_toy_id" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    </resultMap>
+
+    <select id="selectPageByKeyWord" resultType="io.github.talelin.latticy.model.ExchangeOrderDO">
+        SELECT e.id, e.order_no, e.request_toy_id, e.request_user_id,
+               e.exchange_user_id, e.exchange_toy_id,
+               e.status, e.remark,
+               date_format( e.create_time, '%Y-%m-%d %H:%i:%s' ) AS create_time,
+               date_format( e.update_time, '%Y-%m-%d %H:%i:%s' ) AS update_time
+        FROM itoy_exchange_order e
+        WHERE e.delete_time IS NULL
+        <if test="requestUserId != null and requestUserId !=''">
+            AND e.request_user_id = #{requestUserId}
+        </if>
+        <if test="exchangeUserId != null and exchangeUserId !=''">
+            AND e.exchange_user_id = #{exchangeUserId}
+        </if>
+        <if test="status != null and status !=''">
+            AND e.status = #{status}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+</mapper>

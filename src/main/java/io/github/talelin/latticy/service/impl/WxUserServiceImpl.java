@@ -22,7 +22,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUserDO> imple
     }
 
     @Override
-    public boolean createWxUser(RegisterWxUserDTO validator) {
+    public WxUserDO createWxUser(RegisterWxUserDTO validator) {
         // TODO 请求微信API并返回结果注入wx_user
         // authorization.wechatAuth()
         WxUserDO wx_user = new WxUserDO();
@@ -35,6 +35,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUserDO> imple
         wx_user.setAvatarUrl(validator.getAvatarUrl());
         wx_user.setGender(validator.getGender());
         wx_user.setNickName(validator.getNickName());
-        return wxUserMapper.insert(wx_user) > 0;
+        this.baseMapper.insert(wx_user);
+        return wx_user;
     }
 }

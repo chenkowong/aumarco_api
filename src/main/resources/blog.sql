@@ -112,3 +112,37 @@ CREATE TABLE wxuser
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
+-- ----------------------------
+-- 用户-微信账号表
+-- ----------------------------
+DROP TABLE IF EXISTS user_wxuser;
+CREATE TABLE user_wxuser
+(
+    id         int(10) unsigned NOT NULL AUTO_INCREMENT,
+    user_id    int(10) unsigned NOT NULL COMMENT '用户id',
+    wxuser_id  int(10) unsigned NOT NULL COMMENT '微信账号id',
+    PRIMARY KEY (id),
+    KEY user_id_wxuser_id (user_id, wxuser_id) USING BTREE COMMENT '联合索引'
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;
+-- ----------------------------
+-- 时间轴表
+-- ----------------------------
+DROP TABLE IF EXISTS timeline;
+CREATE TABLE timeline
+(
+    id               int(18) unsigned NOT NULL AUTO_INCREMENT,
+    title            varchar(255) NOT NULL COMMENT '时间轴标题',
+    date             varchar(50)  DEFAULT NULL COMMENT '时间轴',
+    path             varchar(255) DEFAULT NULL COMMENT '图片',
+    parent_id        int(18) DEFAULT NULL COMMENT '父级时间轴',
+    radio            int(18) DEFAULT NULL COMMENT '是否视频',
+    create_time      datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
+    update_time      datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
+    delete_time      datetime(3) DEFAULT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY title_del (title, delete_time)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;

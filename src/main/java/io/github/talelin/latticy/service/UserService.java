@@ -129,4 +129,9 @@ public interface UserService extends IService<UserDO> {
      * @return 超级管理员的id
      */
     Integer getRootUserId();
+
+    /**
+     * 通过宝贝id获取用户信息
+     */
+    UserDO selectUserByToyId(Integer toyId);
 }

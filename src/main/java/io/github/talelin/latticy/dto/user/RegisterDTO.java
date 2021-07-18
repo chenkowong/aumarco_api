@@ -23,6 +23,10 @@ public class RegisterDTO {
     @Length(min = 2, max = 10, message = "{username.length}")
     private String username;
 
+    private String nickname;
+
+    private String avatar;
+
     private List<Integer> groupIds;
 
     @Email(message = "{email}")

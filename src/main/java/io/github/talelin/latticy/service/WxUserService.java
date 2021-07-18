@@ -9,5 +9,5 @@ public interface WxUserService extends IService<WxUserDO> {
 
     WxUserDO selectByOpenId(String oepnId);
 
-    boolean createWxUser(RegisterWxUserDTO validator);
+    WxUserDO createWxUser(RegisterWxUserDTO validator);
 }

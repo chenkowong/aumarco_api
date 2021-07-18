@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.talelin.latticy.mapper.ToyMapper">
+    <resultMap id="BaseResultMap" type="io.github.talelin.latticy.model.ToyDO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="toy_no" jdbcType="VARCHAR" property="toy_no" />
+        <result column="toy_title" jdbcType="VARCHAR" property="toy_title" />
+        <result column="toy_cover" jdbcType="VARCHAR" property="toy_cover" />
+        <result column="toy_content" jdbcType="VARCHAR" property="toy_content" />
+        <result column="toy_amount" jdbcType="INTEGER" property="toy_amount" />
+        <result column="toy_alias_amount" jdbcType="INTEGER" property="toy_alias_amount" />
+        <result column="toy_views" jdbcType="INTEGER" property="toy_views" />
+        <result column="toy_like_count" jdbcType="INTEGER" property="toy_like_count" />
+        <result column="toy_comment_count" jdbcType="INTEGER" property="toy_comment_count" />
+        <result column="toy_exchange_count" jdbcType="INTEGER" property="toy_exchange_count" />
+        <result column="toy_number" jdbcType="INTEGER" property="toy_number" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    </resultMap>
+
+    <select id="selectPageByKeyWord" resultType="io.github.talelin.latticy.model.ToyDO">
+        SELECT t.id, t.toy_no, t.toy_title, t.toy_cover,
+               t.toy_content, t.toy_amount, t.toy_alias_amount,
+               t.toy_views, t.toy_like_count,
+               t.toy_comment_count, t.toy_exchange_count,
+               t.toy_number,
+               date_format( t.create_time, '%Y-%m-%d %H:%i:%s' ) AS create_time,
+               date_format( t.update_time, '%Y-%m-%d %H:%i:%s' ) AS update_time
+        FROM itoy_toy t
+        WHERE t.delete_time IS NULL
+        AND t.id IN (
+            SELECT tu.toy_id
+            FROM itoy_toy_user tu
+            WHERE tu.status = 1
+        )
+        <if test="keyWord != null and keyWord !=''">
+            AND t.toy_content LIKE concat('%',#{keyWord},'%')
+        </if>
+        ORDER BY create_time DESC
+    </select>
+</mapper>
