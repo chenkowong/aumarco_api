@@ -10,18 +10,16 @@ import lombok.Data;
 
 import java.util.Date;
 
-@TableName("book")
+@TableName("timeline")
 @Data
-
-public class BookDO {
+public class TimelineDO {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String title;
-    private String author;
-    private String summary;
-    private String image;
-    private Integer blogId;
-    private Integer percentage;
+    private String date;
+    private String path;
+    private Integer parentId;
+    private Integer radio;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;

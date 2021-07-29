@@ -42,6 +42,13 @@ public class BlogController {
     @Autowired
     private VisitorService visitorService;
 
+    /**
+     * 查询博客（分页 + 关键字）
+     * @param page
+     * @param count
+     * @param keyWord
+     * @return 分页结果
+     */
     @GetMapping("/search")
     public PageResponseVO<BlogInfoVO> fetchBlogs(
             @RequestParam(name = "page", required = false, defaultValue = "0")
@@ -59,6 +66,38 @@ public class BlogController {
         return PageUtil.build(iPage, blogInfos);
     }
 
+    /**
+     * 查询博客（按类别）
+     * @param page pageIndex
+     * @param count pageCount
+     * @param sortId 类别id
+     * @return
+     */
+    @GetMapping("/sort")
+    public PageResponseVO<BlogInfoVO> fetchBlogsBySort(
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "page.number.min") Integer page,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "page.count.min")
+            @Max(value = 30, message = "page.count.max") Integer count,
+            @RequestParam(name = "sort_id", required = false) Integer sortId
+    ) {
+        IPage<BlogSortDO> iPage = blogSortService.selectPageBySortId(page, count, sortId);
+        List<BlogInfoVO> blogs = iPage.getRecords().stream().map(blogSort -> {
+            BlogDO blog = blogService.selectById(blogSort.getBlogId());
+            SortDO sort = sortService.getSortById(blogSort.getSortId());
+            return new BlogInfoVO(blog, sort);
+        }).collect(Collectors.toList());
+        // 使用List.sort()做时间排序，日期从大到小
+        blogs.sort((t1, t2) -> t2.getCreateTime().compareTo(t1.getCreateTime()));
+        return PageUtil.build(iPage, blogs);
+    }
+
+    /**
+     * 查询博客（单一）
+     * @param id
+     * @return BlogContentVO
+     */
     @GetMapping("/{id}")
     public BlogContentVO selectBlogById(@PathVariable(value = "id") @Positive(message = "id必须为正整数") Integer id) {
         BlogDO blog = blogService.selectBlogById(id);
@@ -72,6 +111,11 @@ public class BlogController {
         return blogContent;
     }
 
+    /**
+     * 新增博客
+     * @param validator CreateOrUpdateBlogDTO
+     * @return
+     */
     @PostMapping("")
     @GroupRequired
     @PermissionMeta(value = "新增博客", module = "博客", mount = true)
@@ -80,6 +124,12 @@ public class BlogController {
         return new CreatedVO(31);
     }
 
+    /**
+     * 更新博客
+     * @param id
+     * @param validator CreateOrUpdateBlogDTO
+     * @return
+     */
     @PutMapping("/{id}")
     @GroupRequired
     @PermissionMeta(value = "更新博客", module = "博客", mount = true)
@@ -92,6 +142,12 @@ public class BlogController {
         return new UpdatedVO(32);
     }
 
+    /**
+     * 删除博客
+     * @param id
+     * @param sort_id 删除博客时同时删除关联类别
+     * @return
+     */
     @DeleteMapping("/{id}")
     @GroupRequired
     @PermissionMeta(value = "删除博客", module = "博客", mount = true)
@@ -111,6 +167,13 @@ public class BlogController {
         return new DeletedVO(33);
     }
 
+    /**
+     * 查询博客访客（分页）
+     * @param page
+     * @param count
+     * @param blogId
+     * @return
+     */
     @GetMapping("/visitor")
     @GroupRequired
     @PermissionMeta(value = "查询博客访客", module = "博客", mount = true)
@@ -128,25 +191,5 @@ public class BlogController {
             return new BlogVisitorInfoVO(visitor, blogVisitor);
         }).collect(Collectors.toList());
         return PageUtil.build(iPage, visitors);
-    }
-
-    @GetMapping("/sort")
-    public PageResponseVO<BlogInfoVO> fetchBlogsBySort(
-            @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "page.number.min") Integer page,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "page.count.min")
-            @Max(value = 30, message = "page.count.max") Integer count,
-            @RequestParam(name = "sort_id", required = false) Integer sortId
-    ) {
-       IPage<BlogSortDO> iPage = blogSortService.selectPageBySortId(page, count, sortId);
-       List<BlogInfoVO> blogs = iPage.getRecords().stream().map(blogSort -> {
-           BlogDO blog = blogService.selectById(blogSort.getBlogId());
-           SortDO sort = sortService.getSortById(blogSort.getSortId());
-           return new BlogInfoVO(blog, sort);
-       }).collect(Collectors.toList());
-       // 使用List.sort()做时间排序，日期从大到小
-       blogs.sort((t1, t2) -> t2.getCreateTime().compareTo(t1.getCreateTime()));
-       return PageUtil.build(iPage, blogs);
     }
 }

@@ -28,4 +28,8 @@ public class CreateOrUpdateBookDTO {
 
     @Length(max = 100, message = "{book.image.length}")
     private String image;
+
+    private Integer blogId;
+
+    private Integer percentage;
 }

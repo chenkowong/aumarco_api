@@ -11,6 +11,7 @@
         SELECT bs.id, bs.blog_id, bs.sort_id
         FROM blog_sort bs
         WHERE bs.sort_id = #{sortId}
+        ORDER BY bs.id DESC
     </select>
 
     <delete id="deleteBatchByBlogIdAndSortId">

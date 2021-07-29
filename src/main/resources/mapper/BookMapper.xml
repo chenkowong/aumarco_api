@@ -8,19 +8,21 @@
         <result column="author" jdbcType="VARCHAR" property="author"/>
         <result column="summary" jdbcType="VARCHAR" property="summary"/>
         <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="blog_id" jdbcType="INTEGER" property="blog_id"/>
+        <result column="percentage" jdbcType="INTEGER" property="percentage"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
     </resultMap>
 
     <!--CONCAT("%",#{q},"%")-->
-    <select id="selectByTitleLikeKeyword" resultMap="BaseResultMap">
+    <select id="selectByTitleLikeKeyword" resultType="io.github.talelin.latticy.model.BookDO">
         SELECT *
         FROM book b
-        WHERE
-        b.title LIKE #{q}
-        AND
-        b.delete_time IS NULL
+        WHERE b.delete_time IS NULL
+        <if test="keyWord != null and keyWord !=''">
+            AND b.title LIKE CONCAT("%",#{keyWord},"%")
+        </if>
     </select>
 
     <select id="selectByTitle" resultMap="BaseResultMap">

@@ -1,13 +1,16 @@
 package io.github.talelin.latticy.controller.v1;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
+import io.github.talelin.latticy.common.util.PageUtil;
 import io.github.talelin.latticy.dto.book.CreateOrUpdateBookDTO;
 import io.github.talelin.latticy.model.BookDO;
 import io.github.talelin.latticy.service.BookService;
 import io.github.talelin.latticy.vo.CreatedVO;
 import io.github.talelin.latticy.vo.DeletedVO;
+import io.github.talelin.latticy.vo.PageResponseVO;
 import io.github.talelin.latticy.vo.UpdatedVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -53,9 +58,16 @@ public class BookController {
 
 
     @GetMapping("/search")
-    public List<BookDO> searchBook(@RequestParam(value = "q", required = false, defaultValue = "") String q) {
-        List<BookDO> books = bookService.getBookByKeyword("%" + q + "%");
-        return books;
+    public PageResponseVO<BookDO> fetchBooks(
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "page.number.min") Integer page,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "page.count.min")
+            @Max(value = 30, message = "page.count.max") Integer count,
+            @RequestParam(value = "keyWord", required = false, defaultValue = "") String keyWord
+    ) {
+        IPage<BookDO> iPage = bookService.selectPageByKeyWord(page, count, keyWord);
+        return PageUtil.build(iPage);
     }
 
 

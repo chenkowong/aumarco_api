@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.talelin.latticy.mapper.TimelineMapper">
+    <resultMap id="BaseResultMap" type="io.github.talelin.latticy.model.TimelineDO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="date" jdbcType="VARCHAR" property="date" />
+        <result column="path" jdbcType="VARCHAR" property="path" />
+        <result column="parent_id" jdbcType="INTEGER" property="parent_id" />
+        <result column="radio" jdbcType="INTEGER" property="radio" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    </resultMap>
+
+    <select id="selectPageBySort" resultType="io.github.talelin.latticy.model.TimelineDO">
+        SELECT t.id, t.title, t.date, t.path,
+               t.parent_id, t.radio,
+               date_format( t.create_time, '%Y-%m-%d %H:%i:%s' ) AS create_time,
+               date_format( t.update_time, '%Y-%m-%d %H:%i:%s' ) AS update_time
+        FROM timeline t
+        WHERE t.delete_time IS NULL
+        <if test="keyWord != null and keyWord !=''">
+            AND t.title LIKE concat('%',#{keyWord},'%')
+        </if>
+        AND t.parent_id = #{parentId}
+    </select>
+
+    <select id="selectPageByKeyWord" resultType="io.github.talelin.latticy.model.TimelineDO">
+        SELECT t.id, t.title, t.date, t.path,
+        t.parent_id, t.radio,
+        date_format( t.create_time, '%Y-%m-%d %H:%i:%s' ) AS create_time,
+        date_format( t.update_time, '%Y-%m-%d %H:%i:%s' ) AS update_time
+        FROM timeline t
+        WHERE t.delete_time IS NULL
+        <if test="keyWord != null and keyWord !=''">
+            AND t.title LIKE concat('%',#{keyWord},'%')
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectTimelineByParentId" resultType="io.github.talelin.latticy.model.TimelineDO">
+        SELECT t.id, t.title, t.date, t.path,
+               t.parent_id, t.radio,
+               date_format( t.create_time, '%Y-%m-%d %H:%i:%s' ) AS create_time,
+               date_format( t.update_time, '%Y-%m-%d %H:%i:%s' ) AS update_time
+        FROM timeline t
+        WHERE t.delete_time IS NULL
+        AND t.parent_id = #{parentId}
+    </select>
+</mapper>

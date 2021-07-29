@@ -1,5 +1,7 @@
 package io.github.talelin.latticy.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.talelin.latticy.common.mybatis.Page;
 import io.github.talelin.latticy.dto.book.CreateOrUpdateBookDTO;
 import io.github.talelin.latticy.mapper.BookMapper;
 import io.github.talelin.latticy.model.BookDO;
@@ -20,12 +22,21 @@ public class BookServiceImpl implements BookService {
     private BookMapper bookMapper;
 
     @Override
+    public IPage<BookDO> selectPageByKeyWord(Integer page, Integer count, String keyWord) {
+        Page<BookDO> paper = new Page<>(page, count);
+        IPage<BookDO> iPage = bookMapper.selectByTitleLikeKeyword(paper, keyWord);
+        return iPage;
+    }
+
+    @Override
     public boolean createBook(CreateOrUpdateBookDTO validator) {
         BookDO book = new BookDO();
         book.setAuthor(validator.getAuthor());
         book.setTitle(validator.getTitle());
         book.setImage(validator.getImage());
         book.setSummary(validator.getSummary());
+        book.setBlogId(validator.getBlogId());
+        book.setPercentage(validator.getPercentage());
         return bookMapper.insert(book) > 0;
     }
 
@@ -41,6 +52,8 @@ public class BookServiceImpl implements BookService {
         book.setTitle(validator.getTitle());
         book.setImage(validator.getImage());
         book.setSummary(validator.getSummary());
+        book.setBlogId(validator.getBlogId());
+        book.setPercentage(validator.getPercentage());
         return bookMapper.updateById(book) > 0;
     }
 
