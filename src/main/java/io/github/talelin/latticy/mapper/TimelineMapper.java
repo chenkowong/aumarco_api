@@ -13,6 +13,8 @@ public interface TimelineMapper extends BaseMapper<TimelineDO> {
 
     IPage<TimelineDO> selectPageBySort(Page<TimelineDO> paper, String keyWord, Integer parentId);
 
+    IPage<TimelineDO> selectPageWithoutSort(Page<TimelineDO> paper, String keyWord);
+
     IPage<TimelineDO> selectPageByKeyWord(Page<TimelineDO> paper, String keyWord);
 
     List<TimelineDO> selectTimelineByParentId(Integer parentId);

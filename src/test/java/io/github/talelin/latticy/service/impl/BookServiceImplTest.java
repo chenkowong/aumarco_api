@@ -54,6 +54,8 @@ public class BookServiceImplTest {
         bookDO.setAuthor(author);
         bookDO.setImage(image);
         bookDO.setSummary(summary);
+        bookDO.setBlogId(1);
+        bookDO.setPercentage(100);
         bookMapper.insert(bookDO);
 
         List<BookDO> books = bookService.getBookByKeyword("%千里%");
@@ -68,6 +70,8 @@ public class BookServiceImplTest {
         bookDO.setAuthor(author);
         bookDO.setImage(image);
         bookDO.setSummary(summary);
+        bookDO.setBlogId(1);
+        bookDO.setPercentage(100);
         bookMapper.insert(bookDO);
 
         String newTitle = "tttttttt";
@@ -77,6 +81,8 @@ public class BookServiceImplTest {
         validator.setImage(image);
         validator.setSummary(summary);
         validator.setTitle(newTitle);
+        validator.setBlogId(1);
+        validator.setPercentage(100);
 
         BookDO found = bookMapper.selectById(bookDO.getId());
         bookService.updateBook(found, validator);
@@ -92,6 +98,8 @@ public class BookServiceImplTest {
         bookDO.setAuthor(author);
         bookDO.setImage(image);
         bookDO.setSummary(summary);
+        bookDO.setBlogId(1);
+        bookDO.setPercentage(100);
         bookMapper.insert(bookDO);
 
         bookService.deleteById(bookDO.getId());

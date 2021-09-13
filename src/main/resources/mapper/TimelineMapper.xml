@@ -26,6 +26,19 @@
         AND t.parent_id = #{parentId}
     </select>
 
+    <select id="selectPageWithoutSort" resultType="io.github.talelin.latticy.model.TimelineDO">
+        SELECT t.id, t.title, t.date, t.path,
+        t.parent_id, t.radio,
+        date_format( t.create_time, '%Y-%m-%d %H:%i:%s' ) AS create_time,
+        date_format( t.update_time, '%Y-%m-%d %H:%i:%s' ) AS update_time
+        FROM timeline t
+        WHERE t.delete_time IS NULL
+        <if test="keyWord != null and keyWord !=''">
+            AND t.title LIKE concat('%',#{keyWord},'%')
+        </if>
+        AND t.parent_id != 0
+    </select>
+
     <select id="selectPageByKeyWord" resultType="io.github.talelin.latticy.model.TimelineDO">
         SELECT t.id, t.title, t.date, t.path,
         t.parent_id, t.radio,

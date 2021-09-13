@@ -21,7 +21,7 @@
         FROM book b
         WHERE b.delete_time IS NULL
         <if test="keyWord != null and keyWord !=''">
-            AND b.title LIKE CONCAT("%",#{keyWord},"%")
+            AND b.title LIKE CONCAT('%',#{keyWord},'%')
         </if>
     </select>
 

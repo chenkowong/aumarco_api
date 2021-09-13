@@ -25,6 +25,13 @@ public class TimelineServiceImpl extends ServiceImpl<TimelineMapper, TimelineDO>
     }
 
     @Override
+    public IPage<TimelineDO> selectPageWithoutSort(Integer page, Integer count, String keyWord) {
+        Page<TimelineDO> pager = new Page<>(page, count);
+        IPage<TimelineDO> iPage = timelineMapper.selectPageWithoutSort(pager, keyWord);
+        return iPage;
+    }
+
+    @Override
     public IPage<TimelineDO> selectPageByKeyWord(Integer page, Integer count, String keyWord) {
         Page<TimelineDO> pager = new Page<>(page, count);
         IPage<TimelineDO> iPage = timelineMapper.selectPageByKeyWord(pager, keyWord);

@@ -48,6 +48,8 @@ public class BookControllerTest {
         bookDO.setAuthor(author);
         bookDO.setImage(image);
         bookDO.setSummary(summary);
+        bookDO.setBlogId(1);
+        bookDO.setPercentage(100);
         bookMapper.insert(bookDO);
 
         this.id = bookDO.getId();
@@ -65,6 +67,8 @@ public class BookControllerTest {
         bookDO.setAuthor(author);
         bookDO.setImage(image);
         bookDO.setSummary(summary);
+        bookDO.setBlogId(1);
+        bookDO.setPercentage(100);
         bookMapper.insert(bookDO);
         this.id = bookDO.getId();
 
@@ -81,10 +85,13 @@ public class BookControllerTest {
         bookDO.setAuthor(author);
         bookDO.setImage(image);
         bookDO.setSummary(summary);
+        bookDO.setBlogId(1);
+        bookDO.setPercentage(100);
         bookMapper.insert(bookDO);
         this.id = bookDO.getId();
 
-        mvc.perform(get("/v1/book/search?q=千里"))
+        // mvc.perform(get("/v1/book/search?q=千里"))
+        mvc.perform(get("/v1/book"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.
@@ -98,6 +105,8 @@ public class BookControllerTest {
         dto.setImage(image);
         dto.setSummary(summary);
         dto.setTitle(title);
+        dto.setBlogId(1);
+        dto.setPercentage(100);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
@@ -118,6 +127,8 @@ public class BookControllerTest {
         bookDO.setAuthor(author);
         bookDO.setImage(image);
         bookDO.setSummary(summary);
+        bookDO.setBlogId(1);
+        bookDO.setPercentage(100);
         bookMapper.insert(bookDO);
         this.id = bookDO.getId();
 
@@ -125,6 +136,8 @@ public class BookControllerTest {
         dto.setAuthor(author);
         dto.setImage(image);
         dto.setSummary(summary);
+        dto.setBlogId(1);
+        dto.setPercentage(100);
         dto.setTitle(title + "lol");
 
         ObjectMapper mapper = new ObjectMapper();
@@ -146,6 +159,8 @@ public class BookControllerTest {
         bookDO.setAuthor(author);
         bookDO.setImage(image);
         bookDO.setSummary(summary);
+        bookDO.setBlogId(1);
+        bookDO.setPercentage(100);
         bookMapper.insert(bookDO);
         this.id = bookDO.getId();
 

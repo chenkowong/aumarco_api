@@ -10,6 +10,8 @@ public interface TimelineService {
 
     IPage<TimelineDO> selectPageBySort(Integer page, Integer count, String keyWord, Integer parentId);
 
+    IPage<TimelineDO> selectPageWithoutSort(Integer page, Integer count, String keyWord);
+
     IPage<TimelineDO> selectPageByKeyWord(Integer page, Integer count, String keyWord);
 
     List<TimelineDO> selectTimelineByParentId(Integer parentId);

@@ -50,6 +50,19 @@ public class TimelineController {
         return PageUtil.build(iPage, lines);
     }
 
+    @GetMapping("")
+    public PageResponseVO<TimelineDO> fetchTimelineByTime(
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "page.number.min") Integer page,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "page.count.min")
+            @Max(value = 20, message = "page.count.max") Integer count,
+            @RequestParam(name = "keyWord", required = false) String keyWord
+    ) {
+        IPage<TimelineDO> iPage = timelineService.selectPageWithoutSort(page, count, keyWord);
+        return PageUtil.build(iPage);
+    }
+
     @GetMapping("/search")
     public PageResponseVO<TimelineDO> fetchTimeline(
             @RequestParam(name = "page", required = false, defaultValue = "0")

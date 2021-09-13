@@ -18,7 +18,7 @@ public interface BookMapper extends BaseMapper<BookDO> {
 
     IPage<BookDO> selectByTitleLikeKeyword(Page<BookDO> paper, String keyWord);
 
-    List<BookDO> selectByTitleLikeKeyword(@Param("q") String q);
+    List<BookDO> selectByTitleLikeKeyword(@Param("keyWord") String keyWord);
 
     List<BookDO> selectByTitle(@Param("title") String title);
 }

@@ -6,6 +6,8 @@ CREATE TABLE book
     author      varchar(30)               DEFAULT NULL,
     summary     varchar(1000)             DEFAULT NULL,
     image       varchar(100)              DEFAULT NULL,
+    blog_id     int(11)                   DEFAULT NULL,
+    percentage  int(11)                   DEFAULT NULL,
     create_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     update_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     delete_time datetime(3)               DEFAULT NULL,
