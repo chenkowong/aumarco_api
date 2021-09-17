@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.talelin.latticy.mapper.CommentMapper">
+    <resultMap id="BaseResultMap" type="io.github.talelin.latticy.model.CommentDO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="blog_id" jdbcType="INTEGER" property="blogId" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="website" jdbcType="VARCHAR" property="website" />
+        <result column="comment" jdbcType="VARCHAR" property="comment" />
+        <result column="reply" jdbcType="VARCHAR" property="reply" />
+        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+        <result column="comment_like_count" jdbcType="INTEGER" property="commentLikeCount" />
+        <result column="is_owner" jdbcType="INTEGER" property="isOwner" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    </resultMap>
+
+    <select id="selectPageByBlogId" resultType="io.github.talelin.latticy.model.CommentDO">
+        SELECT *
+        FROM comment AS c
+        WHERE c.delete_time IS NULL
+        <if test="blogId != null and blogId !=''">
+            AND c.blog_id = #{blogId}
+        </if>
+        <if test="parentId != null">
+            AND c.parent_id = #{parentId}
+        </if>
+        <if test="start != null and end != null">
+            AND c.create_time BETWEEN #{start} AND #{end}
+        </if>
+    </select>
+</mapper>
