@@ -16,9 +16,9 @@ public class BlogSortServiceImpl implements BlogSortService {
     private BlogSortMapper blogSortMapper;
 
     @Override
-    public IPage<BlogSortDO> selectPageBySortId(Integer page, Integer count, Integer sortId) {
+    public IPage<BlogSortDO> selectPageBySortId(Integer page, Integer count, Integer sortId, Integer removeId) {
         Page<BlogSortDO> pager = new Page<>(page, count);
-        IPage<BlogSortDO> iPage = blogSortMapper.selectPageBySortId(pager, sortId);
+        IPage<BlogSortDO> iPage = blogSortMapper.selectPageBySortId(pager, sortId, removeId);
         return iPage;
     }
 

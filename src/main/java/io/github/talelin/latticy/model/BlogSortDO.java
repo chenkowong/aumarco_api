@@ -22,14 +22,12 @@ public class BlogSortDO {
     private Integer id;
     private Integer blogId;
     private Integer sortId;
+    private String sortName;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
+    public BlogSortDO() {}
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updateTime;
-
-    @JsonIgnore
-    @TableLogic
-    private Date deleteTime;
+    public BlogSortDO(Integer blogId, Integer sortId) {
+        this.blogId = blogId;
+        this.sortId = sortId;
+    }
 }

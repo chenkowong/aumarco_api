@@ -3,16 +3,45 @@
 <mapper namespace="io.github.talelin.latticy.mapper.BlogSortMapper">
     <resultMap id="BaseResultMap" type="io.github.talelin.latticy.model.BlogSortDO">
         <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="blog_id" jdbcType="INTEGER" property="blog_id" />
-        <result column="sort_id" jdbcType="INTEGER" property="sort_id" />
+        <result column="blog_id" jdbcType="INTEGER" property="blogId" />
+        <result column="sort_id" jdbcType="INTEGER" property="sortId" />
     </resultMap>
 
     <select id="selectPageBySortId" resultType="io.github.talelin.latticy.model.BlogSortDO">
-        SELECT bs.id, bs.blog_id, bs.sort_id
+        SELECT bs.id,
+               bs.blog_id,
+               bs.sort_id,
+               s.sort_name
         FROM blog_sort bs
+        LEFT JOIN sort s ON bs.sort_id = s.id
         WHERE bs.sort_id = #{sortId}
-        ORDER BY bs.id DESC
+        <if test="removeId != null">
+            AND bs.blog_id != #{removeId}
+        </if>
+        ORDER BY bs.blog_id DESC
     </select>
+
+    <select id="selectSortIdsByBlogId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT bs.sort_id
+        FROM blog_sort bs
+        WHERE bs.blog_id = #{id}
+    </select>
+
+    <select id="selectBlogSortByBlogId" resultType="io.github.talelin.latticy.model.BlogSortDO">
+        SELECT bs.sort_id,
+               s.sort_name
+        FROM blog_sort bs
+        LEFT JOIN sort s ON bs.sort_id = s.id
+        WHERE bs.blog_id = #{id}
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO blog_sort(blog_id, sort_id)
+        VALUES
+        <foreach collection="relations" item="relation" separator=",">
+            (#{relation.blogId}, #{relation.sortId})
+        </foreach>
+    </insert>
 
     <delete id="deleteBatchByBlogIdAndSortId">
         DELETE FROM blog_sort

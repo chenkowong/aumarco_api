@@ -4,11 +4,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.latticy.dto.blog.CreateOrUpdateBlogDTO;
 import io.github.talelin.latticy.model.BlogDO;
 
+import java.util.Date;
 import java.util.Map;
 
 public interface BlogService {
 
-    IPage<BlogDO> selectPageByKeyWord(Integer page, Integer count, String keyWord);
+    IPage<BlogDO> selectPageByKeyWord(Integer page, Integer count, String keyWord, Integer removeId, Date start, Date end);
 
     BlogDO selectById(Integer id);
 

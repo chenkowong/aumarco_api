@@ -7,17 +7,20 @@ import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.latticy.common.util.PageUtil;
 import io.github.talelin.latticy.dto.blog.CreateOrUpdateBlogDTO;
 import io.github.talelin.latticy.dto.blog_sort.RemoveBlogSortDTO;
+import io.github.talelin.latticy.mapper.BlogSortMapper;
 import io.github.talelin.latticy.model.*;
 import io.github.talelin.latticy.service.*;
 import io.github.talelin.latticy.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +38,9 @@ public class BlogController {
 
     @Autowired
     private BlogSortService blogSortService;
+
+    @Autowired
+    private BlogSortMapper blogSortMapper;
 
     @Autowired
     private BlogVisitorService blogVisitorService;
@@ -56,11 +62,17 @@ public class BlogController {
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "page.count.min")
             @Max(value = 30, message = "page.count.max") Integer count,
-            @RequestParam(name = "keyWord", required = false) String keyWord
+            @RequestParam(name = "keyWord", required = false) String keyWord,
+            @RequestParam(name = "removeId", required = false) Integer removeId,
+            @RequestParam(name = "start", required = false)
+            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date start,
+            @RequestParam(name = "end", required = false)
+            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date end
     ) {
-        IPage<BlogDO> iPage = blogService.selectPageByKeyWord(page, count, keyWord);
+        IPage<BlogDO> iPage = blogService.selectPageByKeyWord(page, count, keyWord, removeId, start, end);
         List<BlogInfoVO> blogInfos = iPage.getRecords().stream().map(blog -> {
-            SortDO sort = sortService.selectSortByBlogId(blog.getId());
+            List<BlogSortDO> sort = blogSortMapper.selectBlogSortByBlogId(blog.getId());
+//            SortDO sort = sortService.selectSortByBlogId(blog.getId());
             return new BlogInfoVO(blog, sort);
         }).collect(Collectors.toList());
         return PageUtil.build(iPage, blogInfos);
@@ -80,12 +92,13 @@ public class BlogController {
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "page.count.min")
             @Max(value = 30, message = "page.count.max") Integer count,
-            @RequestParam(name = "sort_id", required = false) Integer sortId
+            @RequestParam(name = "sort_id", required = false) Integer sortId,
+            @RequestParam(name = "removeId", required = false) Integer removeId
     ) {
-        IPage<BlogSortDO> iPage = blogSortService.selectPageBySortId(page, count, sortId);
+        IPage<BlogSortDO> iPage = blogSortService.selectPageBySortId(page, count, sortId, removeId);
         List<BlogInfoVO> blogs = iPage.getRecords().stream().map(blogSort -> {
             BlogDO blog = blogService.selectById(blogSort.getBlogId());
-            SortDO sort = sortService.getSortById(blogSort.getSortId());
+            List<BlogSortDO> sort = blogSortMapper.selectBlogSortByBlogId(blog.getId());
             return new BlogInfoVO(blog, sort);
         }).collect(Collectors.toList());
         // 使用List.sort()做时间排序，日期从大到小
@@ -104,7 +117,7 @@ public class BlogController {
         if (blog == null) {
             throw new NotFoundException(10022);
         }
-        SortDO sort = sortService.selectSortByBlogId(blog.getId());
+        List<BlogSortDO> sort = blogSortMapper.selectBlogSortByBlogId(blog.getId());
         BlogDO prevBlog = blogService.selectBlogById(id - 1);
         BlogDO nextBlog = blogService.selectBlogById(id + 1);
         BlogContentVO blogContent = new BlogContentVO(blog, prevBlog, nextBlog, sort);

@@ -2,6 +2,7 @@ package io.github.talelin.latticy.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.talelin.latticy.model.BlogDO;
+import io.github.talelin.latticy.model.BlogSortDO;
 import io.github.talelin.latticy.model.SortDO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,8 +21,7 @@ import java.util.Date;
 public class BlogInfoVO {
 
     private Integer id;
-    private Integer sortId;
-    private String sortName;
+    private List<BlogSortDO> sort;
     private String blogTitle;
     private String blogCover;
     private Integer blogViews;
@@ -32,9 +34,12 @@ public class BlogInfoVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date updateTime;
 
-    public BlogInfoVO(BlogDO blog, SortDO sort) {
+    public BlogInfoVO(BlogDO blog, List<BlogSortDO> sort) {
         BeanUtils.copyProperties(blog, this);
-        this.sortId = sort.getId();
-        this.sortName = sort.getSortName();
+        if (sort != null && !sort.isEmpty()) {
+            this.sort = sort;
+        } else {
+            this.sort = new ArrayList<>();
+        }
     }
 }
