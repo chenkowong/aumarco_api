@@ -93,9 +93,10 @@ public class BlogController {
             @Min(value = 1, message = "page.count.min")
             @Max(value = 30, message = "page.count.max") Integer count,
             @RequestParam(name = "sort_id", required = false) Integer sortId,
-            @RequestParam(name = "removeId", required = false) Integer removeId
+            @RequestParam(name = "removeId", required = false) Integer removeId,
+            @RequestParam(name = "desc", required = false) Integer desc
     ) {
-        IPage<BlogSortDO> iPage = blogSortService.selectPageBySortId(page, count, sortId, removeId);
+        IPage<BlogSortDO> iPage = blogSortService.selectPageBySortId(page, count, sortId, removeId, desc);
         List<BlogInfoVO> blogs = iPage.getRecords().stream().map(blogSort -> {
             BlogDO blog = blogService.selectById(blogSort.getBlogId());
             List<BlogSortDO> sort = blogSortMapper.selectBlogSortByBlogId(blog.getId());
@@ -157,26 +158,14 @@ public class BlogController {
 
     /**
      * 删除博客
-     * @param id
-     * @param sort_id 删除博客时同时删除关联类别
+     * @param id 博客id
      * @return
      */
     @DeleteMapping("/{id}")
     @GroupRequired
     @PermissionMeta(value = "删除博客", module = "博客", mount = true)
-    public DeletedVO deleteBlog(@PathVariable("id") @Positive(message = "{id}") Integer id, @Param("sortId") @Positive(message = "{sortId}") Integer sort_id) {
-        if (sort_id == null) {
-            throw new NotFoundException(10023);
-        }
-        BlogDO blog = blogService.selectById(id);
-        if (blog == null) {
-            throw new NotFoundException(10022);
-        }
-        blogService.deleteById(blog.getId());
-        RemoveBlogSortDTO blogSort = new RemoveBlogSortDTO();
-        blogSort.setBlogId(blog.getId());
-        blogSort.setSortId(sort_id);
-        blogSortService.removeBlogSort(blogSort);
+    public DeletedVO deleteBlog(@PathVariable("id") @Positive(message = "{id}") Integer id) {
+        blogService.deleteById(id);
         return new DeletedVO(33);
     }
 

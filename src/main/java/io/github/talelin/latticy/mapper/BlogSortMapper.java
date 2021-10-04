@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface BlogSortMapper extends BaseMapper<BlogSortDO> {
 
-    IPage<BlogSortDO> selectPageBySortId(Page<BlogSortDO> pager, Integer sortId, Integer removeId);
+    IPage<BlogSortDO> selectPageBySortId(Page<BlogSortDO> pager, Integer sortId, Integer removeId, Integer desc);
 
     List<Integer> selectSortIdsByBlogId(Integer id);
 

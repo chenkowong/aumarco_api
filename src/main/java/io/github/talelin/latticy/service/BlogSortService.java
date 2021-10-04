@@ -6,7 +6,7 @@ import io.github.talelin.latticy.model.BlogSortDO;
 
 public interface BlogSortService {
 
-    IPage<BlogSortDO> selectPageBySortId(Integer page, Integer count, Integer sortId, Integer removeId);
+    IPage<BlogSortDO> selectPageBySortId(Integer page, Integer count, Integer sortId, Integer removeId, Integer desc);
 
     /**
      * 匹配博客-类别关联

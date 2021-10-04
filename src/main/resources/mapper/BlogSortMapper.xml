@@ -18,7 +18,9 @@
         <if test="removeId != null">
             AND bs.blog_id != #{removeId}
         </if>
-        ORDER BY bs.blog_id DESC
+        <if test="desc == 1">
+            ORDER BY bs.blog_id DESC
+        </if>
     </select>
 
     <select id="selectSortIdsByBlogId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
